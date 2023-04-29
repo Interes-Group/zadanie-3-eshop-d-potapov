@@ -2,13 +2,13 @@ package sk.stuba.fei.uim.oop.assignment3.product.web;
 
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
 import sk.stuba.fei.uim.oop.assignment3.product.logic.IProductService;
+import sk.stuba.fei.uim.oop.assignment3.product.web.bodies.ProductRequest;
 import sk.stuba.fei.uim.oop.assignment3.product.web.bodies.ProductResponse;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class ProductController {
     private IProductService service;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ProductResponse> getAllAuthors() {
+    public List<ProductResponse> getAllProducts() {
         List<ProductResponse> productResponses = new ArrayList<>();
         List<Product> products = service.getAll();
         for (Product product : products) {
@@ -31,7 +31,14 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ProductResponse getAllAuthors(@PathVariable("id") Long productId) throws NotFoundException {
+    public ProductResponse getAllProducts(@PathVariable("id") Long productId) throws NotFoundException {
         return new ProductResponse(service.getById(productId));
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest body) {
+        Product product = service.create(body);
+        ProductResponse response = new ProductResponse(product);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

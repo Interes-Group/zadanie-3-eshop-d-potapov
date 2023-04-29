@@ -1,7 +1,9 @@
 package sk.stuba.fei.uim.oop.assignment3.product.web.bodies;
 
+import lombok.Getter;
 import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
 
+@Getter
 public class ProductResponse {
     private Long id;
     private String name;
