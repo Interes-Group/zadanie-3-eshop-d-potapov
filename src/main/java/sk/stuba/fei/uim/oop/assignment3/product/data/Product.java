@@ -20,7 +20,7 @@ public class Product {
     private String description;
     private Long amount;
     private String unit;
-    private float price;
+    private double price;
 
     public Product() {
 

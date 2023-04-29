@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface IProductService {
     List<Product> getAll();
-    Product getById(long id) throws NotFoundException;
+    Product getById(Long id) throws NotFoundException;
     Product create(ProductRequest request);
-
+    Product update(Long id, ProductRequest request) throws NotFoundException;
+    void delete(long id) throws NotFoundException;
 }

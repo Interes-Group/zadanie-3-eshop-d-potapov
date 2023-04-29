@@ -20,7 +20,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product getById(long id) throws NotFoundException {
+    public Product getById(Long id) throws NotFoundException {
         Product product = repository.findProductById(id);
         if (product == null) {
             throw new NotFoundException("");
@@ -31,5 +31,22 @@ public class ProductService implements IProductService {
     @Override
     public Product create(ProductRequest request) {
         return repository.save(new Product(request));
+    }
+
+    @Override
+    public Product update(Long id, ProductRequest request) throws NotFoundException {
+        Product product = getById(id);
+        if (request.getName() != null) {
+            product.setName(request.getName());
+        }
+        if (request.getDescription() != null) {
+            product.setDescription(request.getDescription());
+        }
+        return repository.save(product);
+    }
+
+    @Override
+    public void delete(long id) throws NotFoundException {
+        repository.delete(getById(id));
     }
 }

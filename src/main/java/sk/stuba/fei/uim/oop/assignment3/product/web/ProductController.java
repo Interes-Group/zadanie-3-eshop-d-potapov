@@ -41,4 +41,14 @@ public class ProductController {
         ProductResponse response = new ProductResponse(product);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ProductResponse updateProduct(@PathVariable("id") Long productId, @RequestBody ProductRequest body) throws NotFoundException {
+        return new ProductResponse(service.update(productId, body));
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void deleteProduct(@PathVariable("id") Long productId) throws NotFoundException {
+        service.delete(productId);
+    }
 }
