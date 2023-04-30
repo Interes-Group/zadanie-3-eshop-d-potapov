@@ -1,8 +1,8 @@
 package sk.stuba.fei.uim.oop.assignment3.product.logic;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sk.stuba.fei.uim.oop.assignment3.exception.NotFoundException;
 import sk.stuba.fei.uim.oop.assignment3.product.data.IProductRepository;
 import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
 import sk.stuba.fei.uim.oop.assignment3.product.web.bodies.ProductRequest;
@@ -23,7 +23,7 @@ public class ProductService implements IProductService {
     public Product getById(Long id) throws NotFoundException {
         Product product = repository.findProductById(id);
         if (product == null) {
-            throw new NotFoundException("");
+            throw new NotFoundException();
         }
         return product;
     }
@@ -46,7 +46,20 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void delete(long id) throws NotFoundException {
+    public void delete(Long id) throws NotFoundException {
         repository.delete(getById(id));
+    }
+
+    @Override
+    public long getAmount(Long id) throws NotFoundException {
+        return getById(id).getAmount();
+    }
+
+    @Override
+    public long addAmount(Long id, Long increment) throws NotFoundException {
+        Product product = getById(id);
+        product.setAmount(product.getAmount() + increment);
+        repository.save(product);
+        return product.getAmount();
     }
 }
