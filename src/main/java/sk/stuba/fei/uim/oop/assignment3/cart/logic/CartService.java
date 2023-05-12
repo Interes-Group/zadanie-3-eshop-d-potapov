@@ -82,13 +82,10 @@ public class CartService implements ICartService {
 
         double price = 0;
         for (ShoppingListItem item : cart.getShoppingList()){
-            System.out.println(item.getAmount());
-            System.out.println(item.getProduct().getPrice());
             price += item.getAmount() * item.getProduct().getPrice();
         }
         cart.setPayed(true);
         repository.save(cart);
-        System.out.println(price);
         return Double.toString(price);
     }
 }
