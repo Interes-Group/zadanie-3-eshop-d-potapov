@@ -2,6 +2,7 @@ package sk.stuba.fei.uim.oop.assignment3.product.logic;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sk.stuba.fei.uim.oop.assignment3.exception.IllegalOperationException;
 import sk.stuba.fei.uim.oop.assignment3.exception.NotFoundException;
 import sk.stuba.fei.uim.oop.assignment3.product.data.IProductRepository;
 import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
@@ -51,15 +52,25 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public long getAmount(Long id) throws NotFoundException {
+    public Long getAmount(Long id) throws NotFoundException {
         return getById(id).getAmount();
     }
 
     @Override
-    public long addAmount(Long id, Long increment) throws NotFoundException {
+    public Long addAmount(Long id, Long increment) throws NotFoundException {
         Product product = getById(id);
         product.setAmount(product.getAmount() + increment);
         repository.save(product);
         return product.getAmount();
+    }
+
+    @Override
+    public void decreaseAmount(Long id, Long decrement) throws NotFoundException, IllegalOperationException {
+        Product product = getById(id);
+        if (product.getAmount() - decrement < 0){
+            throw new IllegalOperationException();
+        }
+        product.setAmount(product.getAmount() - decrement);
+        repository.save(product);
     }
 }

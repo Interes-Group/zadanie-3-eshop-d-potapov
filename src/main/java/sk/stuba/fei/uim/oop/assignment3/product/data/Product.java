@@ -1,6 +1,7 @@
 package sk.stuba.fei.uim.oop.assignment3.product.data;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sk.stuba.fei.uim.oop.assignment3.product.web.bodies.ProductRequest;
 
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,10 +23,6 @@ public class Product {
     private Long amount;
     private String unit;
     private double price;
-
-    public Product() {
-
-    }
 
     public Product(ProductRequest request) {
         this.name = request.getName();
